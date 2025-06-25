@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Alunos</title>
+</head>
+<body>
+  <h1>Lista de Alunos</h1>
+
+  <!-- Navegação -->
+  <nav>
+    <ul>
+      <li><a href="/criar">Criar Aluno</a></li>
+      <li><a href="/editar">Editar Aluno</a></li>
+      <li><a href="/apagar">Apagar Aluno</a></li>
+    </ul>
+  </nav>
+
+  <table id="tabela-alunos" border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Curso</th>
+        <th>IRA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dados dos alunos serão inseridos aqui -->
+    </tbody>
+  </table>
+
+  <h2>Média do IRA dos Alunos: <span id="media-ira">0</span></h2>
+
+  <script>
+    // Função para listar alunos
+    async function listarAlunos() {
+      const response = await fetch('/api/alunos');
+      const alunos = await response.json();
+      const tabelaBody = document.querySelector('#tabela-alunos tbody');
+      tabelaBody.innerHTML = '';
+
+      let somaIra = 0;
+      alunos.forEach((aluno) => {
+        somaIra += aluno.ira;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${aluno.id}</td>
+          <td>${aluno.nome}</td>
+          <td>${aluno.curso}</td>
+          <td>${aluno.ira}</td>
+        `;
+        tabelaBody.appendChild(tr);
+      });
+
+      const mediaIra = somaIra / alunos.length;
+      document.getElementById('media-ira').innerText = mediaIra.toFixed(2);
+    }
+
+    // Chamar a função para listar alunos quando a página carregar
+    window.onload = listarAlunos;
+  </script>
+</body>
+</html>

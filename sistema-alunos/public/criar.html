@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Aluno</title>
+</head>
+<body>
+  <h1>Criar Aluno</h1>
+
+  <form id="form-criar">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" required><br><br>
+
+    <label for="curso">Curso:</label>
+    <input type="text" id="curso" required><br><br>
+
+    <label for="ira">IRA:</label>
+    <input type="number" id="ira" step="0.1" required><br><br>
+
+    <button type="submit">Criar Aluno</button>
+  </form>
+
+  <nav>
+    <ul>
+      <li><a href="/">Voltar para a lista</a></li>
+    </ul>
+  </nav>
+
+  <script>
+    document.getElementById('form-criar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value;
+      const curso = document.getElementById('curso').value;
+      const ira = parseFloat(document.getElementById('ira').value);
+
+      const response = await fetch('/api/alunos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, curso, ira }),
+      });
+
+      if (response.ok) {
+        alert('Aluno criado com sucesso!');
+        window.location.href = '/';
+      } else {
+        alert('Erro ao criar aluno');
+      }
+    });
+  </script>
+</body>
+</html>

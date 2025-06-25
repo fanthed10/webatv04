@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apagar Aluno</title>
+</head>
+<body>
+  <h1>Apagar Aluno</h1>
+
+  <form id="form-apagar">
+    <label for="id">ID do Aluno:</label>
+    <input type="number" id="id" required><br><br>
+
+    <button type="submit">Apagar Aluno</button>
+  </form>
+
+  <nav>
+    <ul>
+      <li><a href="/">Voltar para a lista</a></li>
+    </ul>
+  </nav>
+
+  <script>
+    document.getElementById('form-apagar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const id = parseInt(document.getElementById('id').value);
+
+      const response = await fetch(`/api/alunos/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('Aluno apagado com sucesso!');
+        window.location.href = '/';
+      } else {
+        alert('Erro ao apagar aluno');
+      }
+    });
+  </script>
+</body>
+</html>
